@@ -1,0 +1,37 @@
+#https://www.biorxiv.org/content/10.1101/377978v2.full
+
+library(yhat)
+library(dplyr)
+
+
+fit1<-lm(mpg~disp+wt+hp+qsec,data=mtcars)
+
+fit2<-lm(mpg~.,data=mtcars)
+
+summary(fit1)
+summary(fit1)$coefficients[,4]  
+effect.size(fit1)
+regrOut<-calc.yhat(fit1)
+boot.out<-boot(mtcars,boot.yhat,100,lmOut=fit1,regrout0=regrOut)
+result<-booteval.yhat(regrOut,boot.out,bty="perc")
+
+plotCI.yhat(regrOut$PredictorMetrics[-nrow(regrOut$PredictorMetrics),],
+result$upperCIpm,result$lowerCIpm, pid=which(colnames(regrOut$PredictorMetrics) 
+%in% c("Beta","rs","CD:0","CD:1","CD:2","GenDom","Pratt","RLW") == TRUE),nr=3,nc=3)
+
+
+summary(fit2)
+summary(fit2)$coefficients[,4]  
+effect.size(fit2)
+
+regrOut<-calc.yhat(fit2)
+boot.out<-boot(mtcars,boot.yhat,100,lmOut=fit2,regrout0=regrOut)
+result<-booteval.yhat(regrOut,boot.out,bty="perc")
+
+plotCI.yhat(regrOut$PredictorMetrics[-nrow(regrOut$PredictorMetrics),],
+            result$upperCIpm,result$lowerCIpm, pid=which(colnames(regrOut$PredictorMetrics) 
+                                                         %in% c("Beta","rs","CD:0","CD:1","CD:2","GenDom","Pratt","RLW") == TRUE),nr=3,nc=3)
+
+
+
+
