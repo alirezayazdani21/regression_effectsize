@@ -1,5 +1,3 @@
-#https://www.biorxiv.org/content/10.1101/377978v2.full
-
 library(yhat)
 library(dplyr)
 
